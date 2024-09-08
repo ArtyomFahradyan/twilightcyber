@@ -1,0 +1,19 @@
+{
+  "search": "Search",
+  "usual": "Usual",
+  "url": "Url",
+  "password": "Password",
+  "username": "Username",
+  "hwid": "HWID",
+  "country": "Country",
+  "ip": "IP",
+  "os": "OS",
+  "typesOfVulnerabilities": "Types of vulnerabilities",
+  "infection_date": "Infection date",
+  "loadMore": "Load More",
+  "malware_path": "Malware path",
+  "computerId": "Computer ID:",
+  "credentials": "Credentials",
+  "invalidDomainName": "Invalid domain name",
+  "enterDomainNames": "Enter domain name"
+}

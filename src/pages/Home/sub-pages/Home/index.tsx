@@ -1,0 +1,98 @@
+import React, { useState, KeyboardEvent } from "react";
+import { useTranslation } from "react-i18next";
+import { Button, DatePicker, Spin } from "antd";
+import { useBreakpoint } from "t-react-hooks";
+import { resData, TLogObject } from "types";
+import { isValidDomain } from "helpers";
+import classNames from "classnames";
+import { AxiosError } from "axios";
+import { useRequest } from "hooks";
+import { take } from "@constants";
+import { getInfo } from "api";
+import DataChart from "./components/DataChart";
+import DataMap from "./components/DataMap";
+import Search from "./components/Search";
+import Tags from "./components/Tags";
+import "./styles.scss";
+
+const { RangePicker } = DatePicker;
+
+function Home() {
+  const { md } = useBreakpoint();
+  const { t } = useTranslation();
+  const [domains, setDomains] = useState<string[]>([]);
+  const [isInvalidDomain, setIsInvalidDomain] = useState(false);
+  const [value, setValue] = useState("");
+  const [date, setDate] = useState<[string, string]>(["", ""]);
+  const [data, setData] = useState<TLogObject[]>(resData.data);
+  const [next, setNext] = useState("");
+
+  const { run: runGetData, loading } = useRequest(getInfo, {
+    onSuccess({ data, next }) {
+      setData((d) => [...d, ...data]);
+      setNext(next);
+    },
+    onError(err) {
+      const e = err as AxiosError;
+      // eslint-disable-next-line no-console
+      console.error(e, "e");
+    },
+    manual: true,
+  });
+
+  const handleAddDomain = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === 13) {
+      e.preventDefault(); // Ensure it is only this code that runs
+      if (isValidDomain(value)) {
+        setIsInvalidDomain(false);
+        setDomains((domains) => [...domains, value]);
+        setValue("");
+      } else {
+        setIsInvalidDomain(true);
+      }
+    }
+  };
+
+  const handleSearch = () => {
+    runGetData({
+      domains,
+      infection_date_from: date[0],
+      infection_date_to: date[1],
+      size: take,
+      ...(next ? { next } : {}),
+    });
+  };
+
+  return (
+    <div className="home">
+      <div className="d-flex align-items-center justify-content-center">
+        <div
+          className={classNames("d-grid gap-2", {
+            "w-50": md,
+            "w-100": !md,
+          })}
+        >
+          <Search
+            handleSearch={handleSearch}
+            handleAddDomain={handleAddDomain}
+            isInvalidDomain={isInvalidDomain}
+            value={value}
+            setValue={setValue}
+          />
+          <Tags domains={domains} setDomains={setDomains} />
+          <RangePicker onChange={(_, dateString) => setDate(dateString)} />
+        </div>
+      </div>
+
+      <Spin spinning={loading}>
+        <DataChart data={data} />
+        <DataMap data={data} />
+      </Spin>
+      <Button onClick={handleSearch} type="link" className="mt-5 " block>
+        {t("loadMore")}
+      </Button>
+    </div>
+  );
+}
+
+export default Home;

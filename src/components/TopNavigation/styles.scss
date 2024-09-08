@@ -1,0 +1,46 @@
+.topnav-wrapper {
+  border-bottom: 1px solid var(--stroke-global-color-border-divider, #E5E5E5);
+  height: 68px;
+  width: 100%;
+  box-shadow: 0 6px 8px 0 #00000005;
+  padding: 24px 12px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+
+  .right-side {
+    width: 30%;
+    gap: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    float: right;
+  }
+
+  .left-side {
+    width: 70%;
+    float: left;
+    display: flex;
+    align-items: center;
+
+    > img {
+      min-width: 150px;
+      margin-right: 48px;
+      cursor: pointer;
+    }
+
+    > div {
+      gap: 24px;
+      display: inline-flex;
+      height: 100%;
+    }
+
+    a {
+      width: max-content;
+    }
+
+    .link-active {
+      color: var(--ds-color-bg-brand);
+    }
+  }
+}
