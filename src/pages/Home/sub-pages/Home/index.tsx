@@ -2,7 +2,7 @@ import React, { useState, KeyboardEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, DatePicker, notification, Spin } from "antd";
 import { useBreakpoint } from "t-react-hooks";
-import { resData, TApiError, TLogObject } from "types";
+import { TApiError, TLogObject } from "types";
 import { isValidDomain } from "helpers";
 import classNames from "classnames";
 import { AxiosError } from "axios";
@@ -25,7 +25,7 @@ function Home() {
   const [isInvalidDomain, setIsInvalidDomain] = useState(false);
   const [value, setValue] = useState("");
   const [date, setDate] = useState<[string, string]>(["", ""]);
-  const [data, setData] = useState<TLogObject[]>(resData.data);
+  const [data, setData] = useState<TLogObject[]>([]);
   const [next, setNext] = useState("");
 
   const { run: runGetData, loading } = useRequest(getInfo, {
@@ -92,12 +92,14 @@ function Home() {
       </div>
 
       <Spin spinning={loading}>
-        <DataChart data={data} />
-        <DataMap data={data} />
+        {data.length ? <DataChart data={data} /> : null}
+        {data.length ? <DataMap data={data} /> : null}
       </Spin>
-      <Button onClick={handleSearch} type="link" className="mt-5 " block>
-        {t("loadMore")}
-      </Button>
+      {data.length ? (
+        <Button onClick={handleSearch} type="link" className="mt-5 " block>
+          {t("loadMore")}
+        </Button>
+      ) : null}
       {contextHolder}
     </div>
   );
