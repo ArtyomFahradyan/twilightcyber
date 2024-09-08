@@ -8,6 +8,8 @@
   "country": "Country",
   "ip": "IP",
   "os": "OS",
+  "wentWrongPlease": "Something went wrong. Please try another way!",
+  "wentWrong": "Something went wrong",
   "typesOfVulnerabilities": "Types of vulnerabilities",
   "infection_date": "Infection date",
   "loadMore": "Load More",

@@ -1,8 +1,8 @@
 import React from "react";
-import Table from "./Table";
 import { Typography } from "antd";
-import { TLogObject } from "../../../../../types";
 import { useTranslation } from "react-i18next";
+import Table from "./Table";
+import { TLogObject } from "types";
 import ComputerInfo from "./ComputerInfo";
 const { Title } = Typography;
 

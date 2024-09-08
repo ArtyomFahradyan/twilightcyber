@@ -10,7 +10,7 @@ export type TGetDataRequestBody = {
   next?: string;
 };
 
-export type Error = {
+export type TApiError = {
   request_id: string;
   error_message: string;
   details: [

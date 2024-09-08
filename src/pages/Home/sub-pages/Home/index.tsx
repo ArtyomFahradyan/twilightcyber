@@ -1,8 +1,8 @@
 import React, { useState, KeyboardEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, DatePicker, Spin } from "antd";
+import { Button, DatePicker, notification, Spin } from "antd";
 import { useBreakpoint } from "t-react-hooks";
-import { resData, TLogObject } from "types";
+import { resData, TApiError, TLogObject } from "types";
 import { isValidDomain } from "helpers";
 import classNames from "classnames";
 import { AxiosError } from "axios";
@@ -19,6 +19,7 @@ const { RangePicker } = DatePicker;
 
 function Home() {
   const { md } = useBreakpoint();
+  const [api, contextHolder] = notification.useNotification();
   const { t } = useTranslation();
   const [domains, setDomains] = useState<string[]>([]);
   const [isInvalidDomain, setIsInvalidDomain] = useState(false);
@@ -33,9 +34,15 @@ function Home() {
       setNext(next);
     },
     onError(err) {
-      const e = err as AxiosError;
-      // eslint-disable-next-line no-console
-      console.error(e, "e");
+      const axiosErr = err as AxiosError;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const e = axiosErr.response as TApiError;
+      api.error({
+        message: e?.error_message || t("wentWrong"),
+        description: e?.details?.[0]?.msg || t("wentWrongPlease"),
+        type: "error",
+      });
     },
     manual: true,
   });
@@ -91,6 +98,7 @@ function Home() {
       <Button onClick={handleSearch} type="link" className="mt-5 " block>
         {t("loadMore")}
       </Button>
+      {contextHolder}
     </div>
   );
 }

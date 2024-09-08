@@ -1,6 +1,6 @@
 import React from "react";
-import { TComputerInfo } from "types";
 import { useTranslation } from "react-i18next";
+import { TComputerInfo } from "types";
 
 type Props = {
   item: TComputerInfo;

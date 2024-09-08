@@ -1,8 +1,8 @@
 import React from "react";
 import { PieChart, Pie, Cell, LabelList, Tooltip } from "recharts";
-import { TAny, TLogObject } from "types";
 import { Typography } from "antd";
 import { useTranslation } from "react-i18next";
+import { TAny, TLogObject } from "types";
 
 const { Title } = Typography;
 
