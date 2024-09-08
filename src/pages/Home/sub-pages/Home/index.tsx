@@ -39,7 +39,7 @@ function Home() {
       // @ts-ignore
       const e = axiosErr.response as TApiError;
       api.error({
-        message: e?.error_message || t("wentWrong"),
+        message: e?.error_message || axiosErr.message || t("wentWrong"),
         description: e?.details?.[0]?.msg || t("wentWrongPlease"),
         type: "error",
       });
